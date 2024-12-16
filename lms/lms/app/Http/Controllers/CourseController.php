@@ -8,21 +8,19 @@ use App\Http\Requests\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
-{
-    return view('courses.index', [
-        'courses' => Course::all() // Make sure this returns data
-    ]);
-}
-
-
+    {
+        return view('courses.index',['courses'=>Course::all()]);
+    }
     public function trashed()
     {
-        $courses = Course::onlyTrashed() -> get();
-        return view('courses.Trashed', [
-            'courses' => $courses
-        ]);
+        $courses=Course::onlyTrashed()->get();
+        return view('courses.trashed',['courses'=>$courses]);
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -37,7 +35,7 @@ class CourseController extends Controller
     public function store(StoreCourseRequest $request)
     {
         Course::create($request->validated());
-        return redirect()->route('courses.index');
+        return redirect() -> route('courses.index');
     }
 
     /**
@@ -45,7 +43,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        return view('courses.show', compact('course'));
     }
 
     /**
@@ -64,21 +62,19 @@ class CourseController extends Controller
         $course->update($request->validated());
         return redirect()->route('courses.index');
     }
-    
-    public function trash($id)
-    {
+
+    public function trash($id){
         Course::destroy($id);
-        return redirect() -> route('courses.index');
+        return redirect()->route('courses.index');
+
     }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
         $course=Course::withTrashed()->where('id',$id)->first();
-        // dd($course); // Debug the course
-        dd($course->trashed()); // Should return true if the course is soft deleted
-
         $course->forceDelete();
         return redirect()->route('courses.trashed');
     }

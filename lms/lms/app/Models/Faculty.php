@@ -10,7 +10,7 @@ class Faculty extends Model
     /** @use HasFactory<\Database\Factories\FacultyFactory> */
     use HasFactory;
 
-    public function courses(){
+    public function courses() {
         return $this -> hasMany(Course::class);
     }
 }

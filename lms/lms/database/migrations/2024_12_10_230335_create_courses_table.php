@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('course_name'); // Ensure this line exists
             $table->string('course_index');
             $table->text('course_description');
             $table->integer('faculty_id')->unsigned();
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
